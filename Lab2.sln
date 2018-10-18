@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2", "Lab2\Lab2.csproj", "{7C88156D-B89E-4670-9D64-9A33A70EF486}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DES", "DES\DES.csproj", "{EC5793D0-033C-4BDE-9652-986133A3E17D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripleDES", "TripleDES\TripleDES.csproj", "{6CC431B5-3FC2-4857-AC48-E4B71D911F0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7C88156D-B89E-4670-9D64-9A33A70EF486}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C88156D-B89E-4670-9D64-9A33A70EF486}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C88156D-B89E-4670-9D64-9A33A70EF486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC5793D0-033C-4BDE-9652-986133A3E17D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC5793D0-033C-4BDE-9652-986133A3E17D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC5793D0-033C-4BDE-9652-986133A3E17D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC5793D0-033C-4BDE-9652-986133A3E17D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CC431B5-3FC2-4857-AC48-E4B71D911F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC431B5-3FC2-4857-AC48-E4B71D911F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC431B5-3FC2-4857-AC48-E4B71D911F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC431B5-3FC2-4857-AC48-E4B71D911F0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
