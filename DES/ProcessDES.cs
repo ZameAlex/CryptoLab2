@@ -12,38 +12,28 @@ namespace DES
         }
 
         #region Encryption Process
-        public string EncryptionStart(string text, string key, bool IsTextBinary)
+        public string EncryptionStart(string text, string key)
         {
             #region Get 16 sub-keys using key
-                        
-            string hex_key = this.FromTextToHex(key);
-            string binary_key = this.FromHexToBinary(hex_key);
-            string key_plus = this.DoPermutation(binary_key, DESData.pc_1);
+
+            string hex_key = FromTextToHex(key);
+            string binary_key = FromHexToBinary(hex_key);
+            string key_plus = DoPermutation(binary_key, DESData.pc_1);
 
             string C0 = "", D0 = "";
 
-            C0 = this.SetLeftHalvesKey(key_plus);
-            D0 = this.SetRightHalvesKey(key_plus);
+            C0 = SetLeftHalvesKey(key_plus);
+            D0 = SetRightHalvesKey(key_plus);
 
-            Keys keys = this.SetAllKeys(C0, D0);
+            Keys keys = SetAllKeys(C0, D0);
 
             #endregion
 
             #region Encrypt process
 
-            //string hex_text = this.FromTextToHex(text);
-            string binaryText = "";
+            string binaryText = FromTextToBinary(text);
 
-            if (IsTextBinary == false)
-            {
-                binaryText = this.FromTextToBinary(text);
-            }
-            else
-            {
-                binaryText = text;
-            }
-
-            binaryText = this.setTextMutipleOf64Bits(binaryText);
+            binaryText = setTextMutipleOf64Bits(binaryText);
 
             StringBuilder EncryptedTextBuilder = new StringBuilder(binaryText.Length);
 
@@ -53,8 +43,8 @@ namespace DES
 
                 string L0 = "", R0 = "";
 
-                L0 = this.SetLeftHalvesKey(PermutatedText);
-                R0 = this.SetRightHalvesKey(PermutatedText);
+                L0 = SetLeftHalvesKey(PermutatedText);
+                R0 = SetRightHalvesKey(PermutatedText);
 
                 string FinalText = this.FinalEncription(L0, R0, keys, false);
 
@@ -69,50 +59,41 @@ namespace DES
         #endregion
 
         #region Decryption Process 
-        public string DecryptionStart(string text, string key, bool IsTextBinary)
+        public string DecryptionStart(string text, string key)
         {
             #region Get 16 sub-keys using key
 
-            string hex_key = this.FromTextToHex(key);
-            string binary_key = this.FromHexToBinary(hex_key);
-            string key_plus = this.DoPermutation(binary_key, DESData.pc_1);
+            string hex_key = FromTextToHex(key);
+            string binary_key = FromHexToBinary(hex_key);
+            string key_plus = DoPermutation(binary_key, DESData.pc_1);
 
             string C0 = "", D0 = "";
 
-            C0 = this.SetLeftHalvesKey(key_plus);
-            D0 = this.SetRightHalvesKey(key_plus);
+            C0 = SetLeftHalvesKey(key_plus);
+            D0 = SetRightHalvesKey(key_plus);
 
-            Keys keys = this.SetAllKeys(C0, D0);
+            Keys keys = SetAllKeys(C0, D0);
 
             #endregion
 
             #region Decrypt process
 
-            string binaryText = "";
+            string binaryText = FromTextToBinary(text);
 
-            if (IsTextBinary == false)
-            {
-                binaryText = this.FromTextToBinary(text);
-            }
-            else
-            {
-                binaryText = text;
-            }
-
-            binaryText = this.setTextMutipleOf64Bits(binaryText);
+            binaryText = setTextMutipleOf64Bits(binaryText);
 
             StringBuilder DecryptedTextBuilder = new StringBuilder(binaryText.Length);
 
             for (int i = 0; i < (binaryText.Length / 64); i++)
             {
-                string PermutatedText = this.DoPermutation(binaryText.Substring(i * 64, 64), DESData.ip);
+                string PermutatedText = DoPermutation(binaryText.Substring(i * 64, 64), DESData.ip);
 
                 string L0 = "", R0 = "";
 
-                L0 = this.SetLeftHalvesKey(PermutatedText);
-                R0 = this.SetRightHalvesKey(PermutatedText);
+                L0 = SetLeftHalvesKey(PermutatedText);
+                R0 = SetRightHalvesKey(PermutatedText);
 
-                string FinalText = this.FinalEncription(L0, R0, keys, true);
+                string FinalText = FinalEncription(L0, R0, keys, true);
 
                 #region It's for correct subtracted '0' that have added for set text multiple of 64bit
                 if ((i * 64 + 64) == binaryText.Length)
@@ -345,12 +326,12 @@ namespace DES
         #region Divide a text to left and right halves
         public string SetLeftHalvesKey(string text)
         {
-            return this.SetHalvesKey(true, text);
+            return SetHalvesKey(true, text);
         }
 
         public string SetRightHalvesKey(string text)
         {
-            return this.SetHalvesKey(false, text);       
+            return SetHalvesKey(false, text);       
         }
 
         public string SetHalvesKey(bool IsLeft, string text)
@@ -409,9 +390,9 @@ namespace DES
 
             for (int i = 1; i < keys.Cn.Length; i++)
             {
-                keys.Cn[i] = this.LeftShift(keys.Cn[i - 1], DESData.nrOfShifts[i]);
-                keys.Dn[i] = this.LeftShift(keys.Dn[i - 1], DESData.nrOfShifts[i]);
-                keys.Kn[i - 1] = this.DoPermutation(keys.Cn[i] + keys.Dn[i], DESData.pc_2);
+                keys.Cn[i] = LeftShift(keys.Cn[i - 1], DESData.nrOfShifts[i]);
+                keys.Dn[i] = LeftShift(keys.Dn[i - 1], DESData.nrOfShifts[i]);
+                keys.Kn[i - 1] = DoPermutation(keys.Cn[i] + keys.Dn[i], DESData.pc_2);
             }          
 
             return keys;
@@ -430,10 +411,10 @@ namespace DES
                 i = 15;
             }
 
-            while (this.IsEnough(i, IsReverse))
+            while (IsEnough(i, IsReverse))
             {
                 Ln = Rn_1;
-                Rn = this.XOR(Ln_1, this.F(Rn_1, keys.Kn[i]));
+                Rn = XOR(Ln_1, F(Rn_1, keys.Kn[i]));
 
                 //Next Step of L1, R1 is L2 = R1, R2 = L1 + f(R1, K2), hence, value of Step1's Ln, Rn is Rn_1, Ln_1 in Step2.
                 Ln_1 = Ln;
@@ -465,13 +446,13 @@ namespace DES
         #region The function f
         public string F(string Rn_1, string Kn)
         {
-            string E_Rn_1 = this.E_Selection(Rn_1);
+            string E_Rn_1 = E_Selection(Rn_1);
 
-            string XOR_Rn_1_Kn = this.XOR(E_Rn_1, Kn);
+            string XOR_Rn_1_Kn = XOR(E_Rn_1, Kn);
 
-            string sBoxedText = this.sBox_Transform(XOR_Rn_1_Kn);
+            string sBoxedText = sBox_Transform(XOR_Rn_1_Kn);
 
-            string P_sBoxedText = this.P(sBoxedText);
+            string P_sBoxedText = P(sBoxedText);
 
             return P_sBoxedText;
         }
@@ -482,7 +463,7 @@ namespace DES
         {
             string PermutatedText = "";
 
-            PermutatedText = this.DoPermutation(text, DESData.pc_p);
+            PermutatedText = DoPermutation(text, DESData.pc_p);
 
             return PermutatedText;
         }
@@ -496,7 +477,7 @@ namespace DES
             for (int i = 0; i < 8; i++)
             {
                 string temp = text.Substring(i * 6, 6);
-                TransformedText.Append(this.DoPermutation(temp, DESData.sBoxes[i]));
+                TransformedText.Append(DoPermutation(temp, DESData.sBoxes[i]));
             }
 
             return TransformedText.ToString();
@@ -506,7 +487,7 @@ namespace DES
         #region E Selection
         public string E_Selection(string Rn_1)
         {
-            string ExpandedText = this.DoPermutation(Rn_1, DESData.pc_e);
+            string ExpandedText = DoPermutation(Rn_1, DESData.pc_e);
 
             return ExpandedText;
         }

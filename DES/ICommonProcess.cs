@@ -6,7 +6,7 @@ namespace DES
 {
     interface ICommonProcess
     {
-        string EncryptionStart(string text, string key, bool IsTextBinary);
-        string DecryptionStart(string text, string key, bool IsTextBinary);
+        string EncryptionStart(string text, string key);
+        string DecryptionStart(string text, string key);
     }
 }
